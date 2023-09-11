@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     # My apps
     'home',
+    'products',
     # 3rd party
     'allauth',
     'allauth.account',
