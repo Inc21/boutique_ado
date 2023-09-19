@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+import stripe
 
 from .models import Order, OrderLineItem
 from products.models import Product
@@ -28,7 +29,7 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         bag = intent.metadata.bag
-        save_info = intent.metadata.save_info
+        save_info = intent.metadata.save_info  # noqa: F841
 
         # Get the Charge object
         stripe_charge = stripe.Charge.retrieve(
@@ -76,7 +77,7 @@ class StripeWH_Handler:
             order = None
             try:
                 order = Order.objects.create(
-                    full_nam=shipping_details.name,
+                    full_name=shipping_details.name,
                     email=billing_details.email,
                     phone_number=shipping_details.phone,
                     country=shipping_details.address.country,
@@ -88,7 +89,7 @@ class StripeWH_Handler:
                     original_bag=bag,
                     stripe_pid=pid,
                 )
-                for item_id, item_data in json.load(bag).items():
+                for item_id, item_data in json.loads(bag).items():
                     product = Product.objects.get(id=item_id)
                     if isinstance(item_data, int):
                         order_line_item = OrderLineItem(
@@ -98,8 +99,8 @@ class StripeWH_Handler:
                         )
                         order_line_item.save()
                     else:
-                        for size, quantity in item_data[
-                                'items_by_size'].items():
+                        for size, quantity in item_data['items_\
+                        by_size'].items():
                             order_line_item = OrderLineItem(
                                 order=order,
                                 product=product,
@@ -107,6 +108,7 @@ class StripeWH_Handler:
                                 product_size=size,
                             )
                             order_line_item.save()
+
             except Exception as e:
                 if order:
                     order.delete()
