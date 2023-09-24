@@ -3,8 +3,10 @@ from .models import UserProfile
 from checkout.models import Order
 from .forms import UserForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def profile(request):
     """ Display the user's profile. """
 
