@@ -176,7 +176,6 @@ def checkout_success(request, order_number):
     template = 'checkout/checkout_success.html'
     context = {
         'order': order,
-        'save_info': save_info,
     }
 
     return render(request, template, context)
