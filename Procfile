@@ -1,1 +1,1 @@
-web: gunicorn boutique_ado.wsgi --log-file -
+web: gunicorn boutique_ado.wsgi:application
