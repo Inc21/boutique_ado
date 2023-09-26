@@ -134,7 +134,9 @@
 
 {% block post_load_js %}
     {{ block.super }}
+    
     <script type="text/javascript">
+        // Back to top button
         $('.btt-link').click(function(e) {
             window.scrollTo(0, 0);
         })
